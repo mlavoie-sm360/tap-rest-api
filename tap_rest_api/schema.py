@@ -104,9 +104,11 @@ def infer_schema(config, streams, out_catalog=True, add_tstamp=True):
         json.dump(schema, f, indent=2)
 
     if out_catalog:
+        key_properties = config.get("key_properties", {}).get(tap_stream_id, [])
         schema["selected"] = True
         catalog = {"streams": [{"stream": tap_stream_id,
                                 "tap_stream_id": tap_stream_id,
+                                "key_properties": key_properties,
                                 "schema": schema
                                 }]}
 

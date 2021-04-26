@@ -200,7 +200,11 @@ def sync(config, streams, state, catalog, assume_sorted=True, max_page=None,
             singer.write_state(state)
 
         try:
+            key_properties = stream.kwargs.get('key_properties', {}).get(
+                stream.tap_stream_id, []
+            )
             state = sync_rows(config, state, stream.tap_stream_id,
+                              key_properties=key_properties,
                               max_page=max_page,
                               auth_method=auth_method,
                               assume_sorted=assume_sorted,
